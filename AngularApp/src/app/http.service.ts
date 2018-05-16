@@ -7,9 +7,8 @@ import { HttpClient } from '@angular/common/http';
 export class HttpService {
 
   constructor(private _http: HttpClient) {
-  this.getCakes();
   }
-  getCakes() {
+  showMeCakes() {
     return this._http.get('/cakes');
   }
 
@@ -21,7 +20,9 @@ export class HttpService {
     return this._http.post('/cakes', newCake);
   }
 
-  addRating(newRating) {
-    return this._http.post(`/cakes/$${newRating._id}`, newRating);
+  addRating(id: string, newRating) {
+    console.log(id);
+    return this._http.post(`/cakes/${id}`, newRating);
+
   }
 }

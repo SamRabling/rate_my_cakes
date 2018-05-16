@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
-var Rate = mongoose.model("Rate");
-var Cake = mongoose.model("Cake");
+var Rate = mongoose.model("rate");
+var Cake = mongoose.model("cake");
 
 module.exports = {
 
     index: function (req, res) {
-        Cake.find({}, function (err, task) {
+        Cake.find({}, function (err, cake) {
             if (err) {
                 res.json({ status: false });
             } else {
-                res.json({ data: task });
+                res.json({ data: cake });
             }
         });
     },
@@ -17,12 +17,12 @@ module.exports = {
     new: function (req, res) {
         console.log("post data");
         var cake = new Cake({
-            baker: req.body.title,
-            img: req.body.description,
+            baker: req.body.baker,
+            img: req.body.img
         });
         cake.save(function (err) {
             if (err) {
-                res.json({ status: false });
+                res.json({ status: false, data: err });
             } else {
                 res.json({ status: true, data: cake });
             }
@@ -31,7 +31,7 @@ module.exports = {
 
     show: function (req, res, err) {
         var id = req.params.id
-        Cake.findOne({ _id: id }, function (err, task) {
+        Cake.findOne({ _id: id }, function (err, cake) {
             if (err) {
                 res.json({ status: false });
             } else {
@@ -41,15 +41,24 @@ module.exports = {
     },
 
     rating: function (req, res) {
-        console.log("post data");
-        var cake = Cake.findOne({ _id: req.body.id }, function (err, cake) {
+        console.log(req.params);
+        Cake.findOne({ _id: req.params.id }, function (err, cake) {
             if (err) {
-                res.json({ status: false });
+                res.json({ status: false, data: err });
+                console.log(err)
             }
             else {
-                cake.rating.push({ rating: req.body.rating, comment: req.body.comment });
+                cake.rating.push(req.body);
                 cake.save(function (err) {
-                    res.json({ status: true, data: cake });
+                    if (err) {
+                        res.json({ status: false, data: err });
+                    }
+                    else{
+                        res.json({ status: true, data: cake });
+                        console.log(cake);
+                    }
+                    
+                
                 });
             }
         }); 

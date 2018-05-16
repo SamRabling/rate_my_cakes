@@ -10,13 +10,14 @@ import { FormsModule } from '@angular/forms';
 export class AppComponent implements OnInit {
   title = 'Rate My Cakes';
   cakes = [];
-  ratings = [];
   showCake = {};
   newCake: any;
+  errors =  null;
 
   constructor(private _httpService: HttpService) {}
-  cakesFromService(): void {
-    const observable = this._httpService.getCakes();
+
+  showMeCakes() {
+    const observable = this._httpService.showMeCakes();
     observable.subscribe(data => {
       console.log('Look at my cakes', data);
       this.cakes = data['data'];
@@ -26,28 +27,31 @@ export class AppComponent implements OnInit {
   oneCake(id: string) {
     const observable = this._httpService.oneCake(id);
     observable.subscribe(data => this.showCake = data['data']);
+    // code for showing rating
   }
 
-  addCake(id: string) {
+  addCake() {
     const observable = this._httpService.addCakes(this.newCake);
     observable.subscribe(data => {
       console.log('new cake', data);
       this.newCake = {baker: '', img: ''};
-      this.cakesFromService();
+      this.showMeCakes();
     });
   }
 
-  addRating(id: string) {
-    const observable = this._httpService.addRating(this.showCake);
-    observable.subscribe(data => {
-      console.log('adding rating', data);
-      // this.showCake = {rating: '', img: ''};
-      this.ratings = data['data'];
+  addRating(id: string, cakeForm) {
+    const review = {
+      rating: cakeForm.controls['rating']['value'],
+      comment: cakeForm.controls['comment']['value']
+    };
+    this._httpService.addRating(id, review).subscribe( data => {
+      this.showMeCakes();
     });
+    console.log(cakeForm.controls['comment']['value']);
   }
 
   ngOnInit() {
-    this.newCake = { baker: '', img: '' };
+    this.showMeCakes();
   }
 
 }

@@ -1,41 +1,44 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>{{ title }}</h1>
-</div>
-<h4>Submit a cake to be reated</h4>
+ <div class="wrapper">
+  <div style="text-align:center">
+    <h1>{{ title }}</h1>
+  </div>
+  <div class="submit_cake">
+    <h4>Submit a cake to be rated</h4>
+    <form (submit) = "addCake()">
+    Baker's Name: <input type="text" name="addCake['baker']" [(ngModel)]= "addCake['baker']" />
+    Image url: <input type="text" name="addCake['img']" [(ngModel)]= "addCake['img']" />
+    <input type="submit">
+    </form>
+  </div>
 
-<form (submit) = "addCake()">
-Baker's Name: <input>
-Image url: <input>
-<input type="submit">
-</form>
-
-<div class="rate_cakes">
-  <ul>
-    <li *ngFor = "let cake of cakes">
-      <button><img src="{{cake.img}}}" (click)="oneCake(cake._id)"></button>
-      <form (submit) = "addRating()">
-        <select name="showCake.rating.rate" [(ngModel)]="showCake.rating.rate" >
-          <option value="5">5
-          <option value="4">4
-          <option value="3">3
-          <option value="2">2
-          <option value="1">1
-        </select>
-        <input name="showCake.rating.comment" [(ngModel)]="showCake.rating.comment" value="Type your comment here">
-        <input type="submit" value="Rate Cake" />
-      </form>
-    </li>
-  </ul>
-</div>
+  <div class="rate_cakes">
+      <div *ngFor = "let cake of cakes">
+        <img class="cake_photo" [src]="cake['img']" (click)="oneCake(cake._id)" />
+        <form #cakeForm="ngForm" (submit)="addRating(cake._id, cakeForm)">
+          <select name="rating" class="form-control" ngModel>
+            <option value="5">5</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+            <option value="1">1</option>
+          </select>
+          <input name="comment" class="form-control" ngModel type="text" value="Type your comment here">
+          <input type="submit" value="Rate Cake">
+        </form>
+      </div>
+  </div>
 
 
-<div class="show_cake">
-  <h2 *ngIf="showCake['baker']">{{showCake.baker}}</h2>
-  <img *ngIf="showCake['img']" src="{{showCake.img}}" alt="cake_img">
-  <div clas="cake_info">
-    <p>Average rating:</p>
-    <p *ngIf="showCake.rating['comment']">{{showCake.rating.comment}}</p>
-    <p *ngIf="showCake.rating['rate']">{{showCake.rating.rate}} stars</p>
+
+
+  <div class="show_cake">
+    <h2 *ngIf="showCake['baker']">{{showCake['baker']}}</h2>
+    <img class="cake_photo" *ngIf="showCake['img']" [src]="showCake['img']" alt="cake_img">
+    <div clas="cake_info">
+      <p>Average rating:</p>
+      <!-- <p *ngIf="showCake.rating['comment']">{{showCake.rating.comment}}</p>
+      <p *ngIf="showCake.rating['rate']">{{showCake.rating.rate}} stars</p> -->
+    </div>
   </div>
 </div>
