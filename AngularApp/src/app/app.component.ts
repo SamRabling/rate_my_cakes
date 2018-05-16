@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'Rate My Cakes;
+  title = 'Rate My Cakes';
   cakes = [];
   ratings = [];
   showCake = {};
@@ -23,8 +23,8 @@ export class AppComponent implements OnInit {
     });
   }
 
-  showCake(id: string) {
-    const observable = this._httpService.showCake(id);
+  oneCake(id: string) {
+    const observable = this._httpService.oneCake(id);
     observable.subscribe(data => this.showCake = data['data']);
   }
 

@@ -3,7 +3,8 @@
   <h1>{{ title }}</h1>
 </div>
 <h4>Submit a cake to be reated</h4>
-<form>
+
+<form (submit) = "addCake()">
 Baker's Name: <input>
 Image url: <input>
 <input type="submit">
@@ -12,7 +13,7 @@ Image url: <input>
 <div class="rate_cakes">
   <ul>
     <li *ngFor = "let cake of cakes">
-      <button><img src="{{cake.img}}}"></button>
+      <button><img src="{{cake.img}}}" (click)="oneCake(cake._id)"></button>
       <form (submit) = "addRating()">
         <select name="showCake.rating.rate" [(ngModel)]="showCake.rating.rate" >
           <option value="5">5
