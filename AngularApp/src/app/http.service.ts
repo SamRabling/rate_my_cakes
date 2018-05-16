@@ -6,5 +6,22 @@ import { HttpClient } from '@angular/common/http';
 })
 export class HttpService {
 
-  constructor() { }
+  constructor(private _http: HttpClient) {
+  this.getCakes();
+  }
+  getCakes() {
+    return this._http.get('/cakes');
+  }
+
+  oneCake(id: string) {
+    return this._http.get(`/cakes/${id}`);
+  }
+
+  addCakes(newCake) {
+    return this._http.post('/cakes', newCake);
+  }
+
+  addRating(newRating) {
+    return this._http.post(`/cakes/$${newRating._id}`, newRating);
+  }
 }
